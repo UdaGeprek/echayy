@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ucapan Ulang Tahun Interaktif</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #d35400;
+    }
+    #message {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+    #photo-preview {
+      max-width: 300px;
+      margin: 1rem auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    input[type="text"], input[type="file"] {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 400px;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      background-color: #e67e22;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d35400;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Selamat Ulang Tahun! 🎂</h1>
+  <div id="message">Semoga harimu menyenangkan!</div>
+
+  <input type="text" id="customMessage" placeholder="Tulis ucapan pribadi..." />
+  <br/>
+  <input type="file" id="uploadPhoto" accept="image/*" />
+  <br/>
+  <input type="text" id="photoUrl" placeholder="Atau masukkan URL foto..." />
+  <br/>
+  <button onclick="updateGreeting()">Tampilkan Ucapan</button>
+
+  <div id="result" style="margin-top:2rem">
+    <p id="finalMessage"></p>
+    <img id="photo-preview" src="" alt="" style="display: none;" />
+  </div>
+
+  <script>
+    function updateGreeting() {
+      const message = document.getElementById('customMessage').value;
+      const urlInput = document.getElementById('photoUrl').value;
+      const fileInput = document.getElementById('uploadPhoto');
+      const preview = document.getElementById('photo-preview');
+      const finalMessage = document.getElementById('finalMessage');
+
+      finalMessage.textContent = message || 'Semoga semua harapanmu tercapai!';
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else if (urlInput.trim()) {
+        preview.src = urlInput;
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
