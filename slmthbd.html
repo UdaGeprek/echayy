@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Birthday Greeting</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ffb8b8;
+            --accent-color: #ffd166;
+            --text-color: #333;
+            --light-color: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(var(--secondary-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--light-color);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px dashed var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #ffbb33;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            border: 3px dashed var(--secondary-color);
+        }
+
+        .preview-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .birthday-card {
+            background: linear-gradient(135deg, #fff6b7, #f6416c);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .birthday-card::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff0, #f0f, #0ff, #f00);
+            z-index: -1;
+            background-size: 400%;
+            animation: rainbow 20s linear infinite;
+            opacity: 0.3;
+            border-radius: 20px;
+        }
+
+        .birthday-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .birthday-message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 20px 0;
+            text-align: center;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .birthday-title {
+            font-size: 2rem;
+            color: #d63031;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            opacity: 0;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #eee;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .audio-controls select {
+            flex: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎉 Interactive Birthday Greeting 🎉</h1>
+        <p>Create a personalized birthday card with photos and music!</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="tab-container">
+                <div class="tab active" data-tab="customize">Customize</div>
+                <div class="tab" data-tab="preview">Preview</div>
+            </div>
+
+            <div id="customize" class="tab-content active">
+                <h2>Create Your Birthday Card</h2>
+                
+                <div class="form-group">
+                    <label for="recipient-name">Recipient's Name</label>
+                    <input type="text" id="recipient-name" placeholder="Enter the birthday person's name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Birthday Message</label>
+                    <textarea id="message" placeholder="Write your birthday message here..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Add Image</label>
+                    <div class="tab-container" style="margin-bottom: 10px;">
+                        <div class="tab active" data-image-tab="upload">Upload</div>
+                        <div class="tab" data-image-tab="url">URL</div>
+                    </div>
+                    
+                    <div id="upload" class="tab-content active">
+                        <input type="file" id="image-upload" accept="image/*">
+                    </div>
+                    
+                    <div id="url" class="tab-content">
+                        <input type="text" id="image-url" placeholder="Enter image URL">
+                    </div>
+                    
+                    <div class="preview-container">
+                        <img id="image-preview" class="image-preview" alt="Image preview">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="theme-color">Card Color</label>
+                    <select id="theme-color">
+                        <option value="gradient-pink">Pink Gradient</option>
+                        <option value="gradient-blue">Blue Gradient</option>
+                        <option value="gradient-purple">Purple Gradient</option>
+                        <option value="solid-yellow">Solid Yellow</option>
+                        <option value="solid-green">Solid Green</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="music">Background Music</label>
+                    <div class="audio-controls">
+                        <select id="music">
+                            <option value="">No music</option>
+                            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Happy Birthday</option>
+                            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Celebration</option>
+                            <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Joyful</option>
+                        </select>
+                        <button id="test-music" class="btn btn-secondary">▶️ Test</button>
+                    </div>
+                    <audio id="audio-player" controls style="display: none;"></audio>
+                </div>
+                
+                <button id="generate-btn" class="btn">🎂 Generate Birthday Card</button>
+            </div>
+
+            <div id="preview" class="tab-content">
+                <div id="birthday-card" class="birthday-card">
+                    <h2 class="birthday-title">Happy Birthday, <span id="card-recipient">Friend</span>!</h2>
+                    <img id="card-image" class="birthday-image" src="" alt="Birthday image">
+                    <div id="card-message" class="birthday-message">
+                        Wishing you a wonderful birthday filled with joy and happiness!
+                    </div>
+                </div>
+                <button id="back-btn" class="btn btn-secondary">← Back to Customize</button>
+                <button id="share-btn" class="btn">📤 Share Card</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabType = tab.classList.contains('tab') ? 'tab' : 'image-tab';
+                    
+                    if (tabType === 'tab') {
+                        // Main tabs
+                        const tabId = tab.getAttribute('data-tab');
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                        
+                        tab.classList.add('active');
+                        document.getElementById(tabId).classList.add('active');
+                    } else {
+                        // Image tabs
+                        const tabId = tab.getAttribute('data-image-tab');
+                        document.querySelectorAll('[data-image-tab]').forEach(t => t.classList.remove('active'));
+                        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                        
+                        tab.classList.add('active');
+                        document.getElementById(tabId).classList.add('active');
+                    }
+                });
+            });
+
+            // Image preview
+            const imageUpload = document.getElementById('image-upload');
+            const imageUrl = document.getElementById('image-url');
+            const imagePreview = document.getElementById('image-preview');
+            
+            imageUpload.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            imageUrl.addEventListener('input', function() {
+                if (imageUrl.value) {
+                    imagePreview.src = imageUrl.value;
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+            });
+
+            // Test music button
+            const testMusicBtn = document.getElementById('test-music');
+            const musicSelect = document.getElementById('music');
+            const audioPlayer = document.getElementById('audio-player');
+            
+            testMusicBtn.addEventListener('click', function() {
+                if (musicSelect.value) {
+                    audioPlayer.src = musicSelect.value;
+                    audioPlayer.play();
+                }
+            });
+
+            // Generate birthday card
+            const generateBtn = document.getElementById('generate-btn');
+            const recipientName = document.getElementById('recipient-name');
+            const message = document.getElementById('message');
+            const themeColor = document.getElementById('theme-color');
+            const birthdayCard = document.getElementById('birthday-card');
+            const cardRecipient = document.getElementById('card-recipient');
+            const cardMessage = document.getElementById('card-message');
+            const cardImage = document.getElementById('card-image');
+            
+            generateBtn.addEventListener('click', function() {
+                // Set recipient name
+                cardRecipient.textContent = recipientName.value || 'Friend';
+                
+                // Set message
+                cardMessage.textContent = message.value || 'Wishing you a wonderful birthday filled with joy and happiness!';
+                
+                // Set image
+                if (imagePreview.style.display === 'block') {
+                    cardImage.src = imagePreview.src;
+                    cardImage.style.display = 'block';
+                } else {
+                    cardImage.style.display = 'none';
+                }
+                
+                // Set theme
+                birthdayCard.className = 'birthday-card';
+                switch (themeColor.value) {
+                    case 'gradient-pink':
+                        birthdayCard.style.background = 'linear-gradient(135deg, #fff6b7, #f6416c)';
+                        break;
+                    case 'gradient-blue':
+                        birthdayCard.style.background = 'linear-gradient(135deg, #a1c4fd, #c2e9fb)';
+                        break;
+                    case 'gradient-purple':
+                        birthdayCard.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                        break;
+                    case 'solid-yellow':
+                        birthdayCard.style.background = '#ffd166';
+                        break;
+                    case 'solid-green':
+                        birthdayCard.style.background = '#06d6a0';
+                        break;
+                    default:
+                        birthdayCard.style.background = 'linear-gradient(135deg, #fff6b7, #f6416c)';
+                }
+                
+                // Show preview tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelector('[data-tab="preview"]').classList.add('active');
+                document.getElementById('preview').classList.add('active');
+                
+                // Start music if selected
+                if (musicSelect.value) {
+                    audioPlayer.src = musicSelect.value;
+                    audioPlayer.loop = true;
+                    audioPlayer.play();
+                }
+                
+                // Create confetti
+                createConfetti();
+            });
+
+            // Back button
+            const backBtn = document.getElementById('back-btn');
+            backBtn.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelector('[data-tab="customize"]').classList.add('active');
+                document.getElementById('customize').classList.add('active');
+                
+                // Stop music
+                audioPlayer.pause();
+            });
+
+            // Share button
+            const shareBtn = document.getElementById('share-btn');
+            shareBtn.addEventListener('click', function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Birthday Greeting for ' + (recipientName.value || 'Friend'),
+                        text: 'Check out this birthday card I made!',
+                        url: window.location.href
+                    }).catch(err => {
+                        alert('Error sharing: ' + err);
+                    });
+                } else {
+                    // Fallback for browsers that don't support Web Share API
+                    alert('Web Share API not supported in your browser. You can copy the URL manually.');
+                }
+            });
+
+            // Confetti effect
+            function createConfetti() {
+                const colors = ['#ff6b6b', '#ffb8b8', '#ffd166', '#06d6a0', '#118ab2', '#073b4c'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.animationDelay = Math.random() * 5 + 's';
+                    birthdayCard.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 7000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
