@@ -3,64 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ucapan Ulang Tahun Interaktif</title>
+    <title>Surprise for Echa!</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background-color 0.5s ease;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            transition: background 0.5s ease;
         }
 
         .container {
             text-align: center;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             max-width: 500px;
             width: 90%;
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
             transition: all 0.5s ease;
         }
 
         h1 {
             color: #ff6b6b;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 2.5em;
         }
 
         .password-section input {
-            padding: 12px;
+            padding: 15px;
             width: 70%;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            border: 3px solid #ffd166;
+            border-radius: 50px;
+            font-size: 18px;
             margin-right: 10px;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
         }
 
         .password-section input:focus {
-            border-color: #ff6b6b;
+            border-color: #06d6a0;
             outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(6, 214, 160, 0.3);
         }
 
         .password-section button {
-            padding: 12px 20px;
-            background-color: #ff6b6b;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
 
         .password-section button:hover {
-            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .password-section button:active {
+            transform: translateY(1px);
         }
 
         .birthday-section {
@@ -68,26 +86,15 @@
             animation: fadeIn 1s;
         }
 
-        .birthday-section h2 {
-            color: #ff6b6b;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .birthday-section p {
-            color: #555;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-
         .birthday-card {
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 20px;
             margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
 
         .birthday-card::before {
@@ -99,66 +106,112 @@
             bottom: -10px;
             background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
             z-index: 0;
-            border-radius: 15px;
+            border-radius: 30px;
         }
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            opacity: 0;
+        .birthday-card h2 {
+            color: #fff;
+            font-size: 2em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .birthday-card p {
+            color: #fff;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .cake {
-            font-size: 50px;
+            font-size: 80px;
             margin: 20px 0;
-            animation: bounce 2s infinite;
-        }
-
-        .message {
-            margin: 20px 0;
-            font-style: italic;
+            display: inline-block;
+            animation: bounce 2s infinite, rotate 5s infinite linear;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
         }
 
         .name {
             font-weight: bold;
-            color: #ff6b6b;
+            color: #fff;
+            font-size: 1.3em;
+            text-decoration: underline;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .btn-play {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s;
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            opacity: 0;
+            z-index: 1;
         }
 
-        .btn-play:hover {
-            background-color: #45a049;
-        }
-
-        .error-message {
-            color: #ff5252;
-            margin-top: 10px;
-            display: none;
+        .balloons {
+            position: absolute;
+            font-size: 30px;
+            z-index: 2;
+            animation: float 10s infinite linear;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(1000px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .password-hint {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            animation: emoji-fall linear forwards;
+        }
+
+        @keyframes emoji-fall {
             0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(1000px) rotate(360deg); opacity: 0; }
         }
@@ -167,38 +220,40 @@
 <body>
     <div class="container">
         <div class="password-section" id="passwordSection">
-            <h1>Selamat Datang</h1>
-            <p>Masukkan password untuk melihat ucapan spesial:</p>
-            <input type="password" id="passwordInput" placeholder="Masukkan password...">
-            <button onclick="checkPassword()">Masuk</button>
-            <p class="error-message" id="errorMessage">Password salah! Coba lagi.</p>
+            <h1>🎉 Surprise for Echa! 🎉</h1>
+            <p>Masukkan password ajaib untuk melihat kejutan spesial:</p>
+            <input type="password" id="passwordInput" placeholder="Password...">
+            <button onclick="checkPassword()">Buka Kejutan!</button>
+            <p class="password-hint">Hint: Nama pacar kamu + gtg</p>
         </div>
 
         <div class="birthday-section" id="birthdaySection">
             <div class="birthday-card">
-                <h2>Selamat Ulang Tahun!</h2>
-                <div class="cake">🎂</div>
-                <p>Hari ini adalah hari spesial untukmu!</p>
-                <div class="message">
-                    <p>Untuk <span class="name" id="namePlaceholder">[Nama]</span>,</p>
-                    <p>Semoga di hari ulang tahunmu ini, kamu mendapatkan segala kebahagiaan dan keberuntungan. Semoga tahun ini membawa banyak kesuksesan, kesehatan, dan kebahagiaan dalam hidupmu!</p>
-                    <p>🎉 Selamat Ulang Tahun! 🎉</p>
-                </div>
+                <h2>🎂 SELAMAT ULANG TAHUN! 🎂</h2>
+                <div class="cake">🍰</div>
+                <p>Untuk <span class="name">Echa Juli Anggraeni</span>,</p>
+                <p>Di hari spesialmu ini, semoga kamu mendapatkan semua kebahagiaan yang kamu inginkan!</p>
+                <p>Kamu adalah orang yang luar biasa dan aku sangat beruntung bisa mengenalmu.</p>
+                <p>Semoga tahun ini membawa banyak kesuksesan, kesehatan, dan kebahagiaan untukmu!</p>
+                <p>🎈 Happy Birthday! 🎈</p>
             </div>
-            <button class="btn-play" onclick="playCelebration()">Putar Perayaan!</button>
         </div>
     </div>
 
+    <div class="emoji-rain" id="emojiRain"></div>
+
     <script>
         // Password yang benar
-        const CORRECT_PASSWORD = "selamatulangtahun";
+        const CORRECT_PASSWORD = "rizkygtg";
         
         // Elemen DOM
         const passwordSection = document.getElementById('passwordSection');
         const birthdaySection = document.getElementById('birthdaySection');
         const passwordInput = document.getElementById('passwordInput');
-        const errorMessage = document.getElementById('errorMessage');
-        const namePlaceholder = document.getElementById('namePlaceholder');
+        const emojiRain = document.getElementById('emojiRain');
+        
+        // Emoji untuk efek hujan
+        const emojis = ['🎉', '🎊', '🎈', '🎁', '🎂', '🍰', '🍭', '🍫', '🌸', '💖', '✨', '🌟', '💫', '🥳', '😊', '🎇', '🎆'];
 
         // Fungsi untuk memeriksa password
         function checkPassword() {
@@ -208,20 +263,25 @@
                 birthdaySection.style.display = 'block';
                 
                 // Ubah warna background
-                document.body.style.backgroundColor = '#ffebee';
+                document.body.style.background = 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)';
                 
-                // Tanyakan nama dan personalisasi pesan
-                const name = prompt("Siapa nama Anda? (Opsional)") || "Teman";
-                namePlaceholder.textContent = name;
+                // Mulai efek konfeti dan emoji
+                startCelebration();
+                
+                // Putar musik otomatis
+                playMusic();
             } else {
-                // Password salah, tampilkan pesan error
-                errorMessage.style.display = 'block';
-                passwordInput.style.borderColor = '#ff5252';
+                // Password salah, tampilkan alert dengan password yang benar
+                alert(`Passwordnya adalah: ${CORRECT_PASSWORD}`);
                 
                 // Animasi shake untuk efek visual
                 passwordSection.style.animation = 'none';
-                void passwordSection.offsetWidth; // Trigger reflow
+                void passwordSection.offsetWidth;
                 passwordSection.style.animation = 'shake 0.5s';
+                
+                // Reset input
+                passwordInput.value = '';
+                passwordInput.focus();
             }
         }
 
@@ -236,7 +296,7 @@
         function createConfetti() {
             const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 200; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 
@@ -245,7 +305,7 @@
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 
                 // Atur ukuran acak
-                const size = Math.random() * 10 + 5;
+                const size = Math.random() * 15 + 5;
                 confetti.style.width = size + 'px';
                 confetti.style.height = size + 'px';
                 
@@ -264,51 +324,77 @@
             }
         }
 
-        // Fungsi untuk memainkan musik dan efek perayaan
-        function playCelebration() {
-            // Buat confetti
-            createConfetti();
-            
-            // Mainkan suara (jika diizinkan browser)
+        // Fungsi untuk membuat hujan emoji
+        function createEmojiRain() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    // Atur posisi acak
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    
+                    // Atur animasi
+                    const duration = Math.random() * 3 + 3;
+                    emoji.style.animation = `emoji-fall ${duration}s linear forwards`;
+                    emoji.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    emojiRain.appendChild(emoji);
+                    
+                    // Hapus emoji setelah animasi selesai
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, duration * 1000);
+                }, i * 200);
+            }
+        }
+
+        // Fungsi untuk memainkan musik
+        function playMusic() {
             try {
                 const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-happy-birthday-to-you-308.mp3');
-                audio.play();
+                audio.loop = true;
+                audio.play().catch(e => console.log("Autoplay blocked:", e));
             } catch (e) {
                 console.log("Tidak dapat memutar suara:", e);
             }
+        }
+
+        // Fungsi untuk memulai perayaan
+        function startCelebration() {
+            // Buat confetti
+            createConfetti();
+            
+            // Buat hujan emoji (berulang setiap 3 detik)
+            createEmojiRain();
+            setInterval(createEmojiRain, 3000);
             
             // Animasi cake
             const cake = document.querySelector('.cake');
-            cake.style.animation = 'none';
-            void cake.offsetWidth; // Trigger reflow
-            cake.style.animation = 'bounce 0.5s infinite';
+            cake.style.animation = 'bounce 0.5s infinite, rotate 5s infinite linear';
             
-            // Ganti warna background
-            const colors = ['#ffebee', '#e8f5e9', '#e3f2fd', '#f3e5f5', '#fff8e1'];
+            // Ganti warna background secara acak
+            const colors = [
+                'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+                'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
+                'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+                'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'
+            ];
+            
             let currentIndex = 0;
-            
             const colorInterval = setInterval(() => {
-                document.body.style.backgroundColor = colors[currentIndex];
+                document.body.style.background = colors[currentIndex];
                 currentIndex = (currentIndex + 1) % colors.length;
-            }, 500);
-            
-            // Hentikan setelah 5 detik
-            setTimeout(() => {
-                clearInterval(colorInterval);
-                document.body.style.backgroundColor = '#ffebee';
-            }, 5000);
+            }, 3000);
         }
 
-        // Tambahkan CSS untuk animasi shake
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
+        // Fokus ke input password saat halaman dimuat
+        window.onload = function() {
+            passwordInput.focus();
+        };
     </script>
 </body>
 </html>
